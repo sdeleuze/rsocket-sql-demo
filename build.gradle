@@ -1,0 +1,51 @@
+plugins {
+	id("org.jetbrains.kotlin.jvm") version "1.2.31"
+	id ("com.github.johnrengelman.shadow") version "2.0.1"
+	id("io.spring.dependency-management") version "1.0.4.RELEASE"
+}
+
+group = 'io.pivotal'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+compileKotlin {
+	kotlinOptions {
+		freeCompilerArgs = ["-Xjsr305=strict"]
+		jvmTarget = "1.8"
+	}
+}
+compileTestKotlin {
+	kotlinOptions {
+		freeCompilerArgs = ["-Xjsr305=strict"]
+		jvmTarget = "1.8"
+	}
+}
+
+repositories {
+	mavenCentral()
+	maven { url "https://raw.githubusercontent.com/nebhale/r2dbc/maven/milestone" }
+}
+
+dependencyManagement {
+	imports {
+		mavenBom 'org.springframework.boot:spring-boot-dependencies:2.0.1.RELEASE'
+	}
+}
+
+test {
+	useJUnitPlatform()
+}
+
+dependencies {
+	compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+	compile("com.nebhale.r2dbc:r2dbc-postgresql:1.0.0.M3")
+	compile("org.slf4j:slf4j-api")
+	compile("ch.qos.logback:logback-classic")
+
+	compile("ru.yandex.qatools.embed:postgresql-embedded:2.9")
+	compile("org.postgresql:postgresql")
+	compile("com.zaxxer:HikariCP")
+
+	testImplementation("org.junit.jupiter:junit-jupiter-api")
+	testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+}
